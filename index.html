@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Libre</title>
+    <link rel="icon " href="img´s/logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #EBEBEB;
+        }
+        .header {
+            background-color: #FFE600;
+            padding: 8px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px 40px 10px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 16px;
+        }
+        .search-icon {
+            position: absolute;
+            right: calc(50% - 290px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #666;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .nav ul {
+            list-style-type: none;
+            display: flex;
+        }
+        .nav ul li {
+            margin-right: 15px;
+        }
+        .nav ul li:last-child {
+            margin-right: 0;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #333;
+        }
+        .hero-slider {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            background-size: cover;
+            background-position: center;        }
+        .hero-slide.active {
+            opacity: 1;
+        }
+        .hero-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(235,235,235,0), rgba(235,235,235,1));
+        }
+        .feature-boxes {
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .feature-container {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+        }
+        .feature-box {
+            flex: 0 0 calc(16.666% - 20px);
+            margin: 0 10px;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+        }
+        .feature-box img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        .feature-box h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .feature-box p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .feature-box button {
+            background-color: #cce0ff;
+            color: #3483FA;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .feature-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .feature-nav.prev {
+            left: 10px;
+        }
+        .feature-nav.next {
+            right: 10px;
+        }
+        .products {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .products h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .product-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .product-card .price {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .product-card .discount {
+            color: #00a650;
+            font-size: 14px;
+        }
+        .product-card .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+        }
+        .cart-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .logo2 img{
+            width: 135px;
+            height: 51px;
+        }
+       
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Buscar productos, marcas y más...">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <nav class="nav">
+                <label for="" class="logo2">
+                    <a href=""><img src="img´s/logo2.webp" alt=""></a>
+                </label>
+                <ul>
+                    <li><a href="#">Categorías</a></li>
+                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="#">Cupones</a></li>
+                    <li><a href="#">Supermercado</a></li>
+                    <li><a href="#">Moda</a></li>
+                    <li><a href="#">Vender</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#">Crear cuenta</a></li>
+                    <li><a href="#">Ingresa</a></li>
+                    <li><a href="#">Mis compras</a></li>
+                    <li>
+                        <a href="#">
+                            <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero-slider">
+        <div class="hero-slide active" style="background-image: url('img´s/slider1.webp');"></div>
+        <div class="hero-slide" style="background-image: url('img´s/slider2.webp');"></div>
+        <div class="hero-slide" style="background-image: url('img´s/slider3.webp');"></div>
+        <div class="hero-gradient"></div>
+    </div>
+
+    <main class="container">
+        <section class="feature-boxes" aria-label="Características principales">
+            <div class="feature-container">
+                <div class="feature-box">
+                    <img src="img´s/ingresar-cuenta.png" alt="" aria-hidden="true">
+                    <h3>Ingresa a tu cuenta</h3>
+                    <p>Accede a tus compras y ventas</p>
+                    <button>Ingresar</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/ingresar-ubicacion.png" alt="" aria-hidden="true">
+                    <h3>Ingresa ubicación</h3>
+                    <p>Recibe productos cerca de ti</p>
+                    <button>Ubicar</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/medios-de-pago.png" alt="" aria-hidden="true">
+                    <h3>Medios de pago</h3>
+                    <p>Paga de forma segura</p>
+                    <button>Ver opciones</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/ofertas.png" alt="" aria-hidden="true">
+                    <h3>Ofertas</h3>
+                    <p>Descubre las mejores ofertas</p>
+                    <button>Ver ofertas</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/compra-protegida.png" alt="" aria-hidden="true">
+                    <h3>Compra protegida</h3>
+                    <p>Te cubrimos en tus compras</p>
+                    <button>Saber más</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/tiendas-oficiales.png" alt="" aria-hidden="true">
+                    <h3>Tiendas oficiales</h3>
+                    <p>Las mejores marcas</p>
+                    <button>Explorar</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/nuestras-categorias.png" alt="" aria-hidden="true">
+                    <h3>Nuestras categorías</h3>
+                    <p>Encuentra lo que buscas</p>
+                    <button>Ver categorías</button>
+                </div>
+                <div class="feature-box">
+                    <img src="img´s/ayuda.png" alt="" aria-hidden="true">
+                    <h3>¿Necesitas Ayuda?</h3>
+                    <p>Estamos para ayudarte</p>
+                    <button>Contactar</button>
+                </div>
+            </div>
+            <button class="feature-nav prev" aria-label="Anterior característica">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="feature-nav next" aria-label="Siguiente característica">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </section>
+
+        <section class="products">
+            <h2>Ofertas del día</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="img´s/Silla-ejecutiva.webp" alt="Silla Ejecutiva">
+                    <h3>Silla Ejecutiva Mesh Ergonómica Negra</h3>
+                    <p class="price">$ 127.920</p>
+                    <p class="discount">20% OFF</p>
+                    <p class="original-price">$ 159.900</p>
+                </div>
+                <div class="product-card">
+                    <img src="img´s/power-bank.webp" alt="Power Bank">
+                    <h3>Power Bank Batería Portátil</h3>
+                    <p class="price">$ 75.689</p>
+                    <p class="discount">13% OFF</p>
+                    <p class="original-price">$ 86.999</p>
+                </div>
+                <div class="product-card">
+                    <img src="img´s/parlantes.webp" alt="Parlante Sonos">
+                    <h3>Parlante Sonos Portátil</h3>
+                    <p class="price">$ 365.795</p>
+                    <p class="discount">15% OFF</p>
+                    <p class="original-price">$ 430.347</p>
+                </div>
+                <div class="product-card">
+                    <img src="img´s/audifonos.webp" alt="Audífonos JBL">
+                    <h3>Audífonos JBL Tune 510BT</h3>
+                    <p class="price">$ 164.206</p>
+                    <p class="discount">26% OFF</p>
+                    <p class="original-price">$ 221.900</p>
+                </div>
+                <div class="product-card">
+                    <img src="img´s/silla-auto.webp" alt="Silla para Auto">
+                    <h3>Silla para Auto Graco</h3>
+                    <p class="price">$ 337.935</p>
+                    <p class="discount">35% OFF</p>
+                    <p class="original-price">$ 519.900</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Hero Slider
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        let currentHeroSlide = 0;
+
+        function showNextHeroSlide() {
+            heroSlides[currentHeroSlide].classList.remove('active');
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+            heroSlides[currentHeroSlide].classList.add('active');
+        }
+
+        setInterval(showNextHeroSlide, 5000);
+
+        // Feature Boxes
+        const featureContainer = document.querySelector('.feature-container');
+        const prevButton = document.querySelector('.feature-nav.prev');
+        const nextButton = document.querySelector('.feature-nav.next');
+        let currentPosition = 0;
+
+        prevButton.addEventListener('click', () => {
+            if (currentPosition > 0) {
+                currentPosition--;
+                updateFeaturePosition();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentPosition < 2) {
+                currentPosition++;
+                updateFeaturePosition();
+            }
+        });
+
+        function updateFeaturePosition() {
+            const boxWidth = featureContainer.querySelector('.feature-box').offsetWidth + 20; // 20px for margins
+            featureContainer.style.transform = `translateX(-${currentPosition * boxWidth}px)`;
+        }
+    </script>
+</body>
+</html>

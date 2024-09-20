@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Mercado Libre Clone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #EBEBEB;
+        }
+        .header {
+            background-color: #FFE600;
+            padding: 8px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px 40px 10px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 16px;
+        }
+        .search-icon {
+            position: absolute;
+            right: calc(50% - 290px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #666;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .nav ul {
+            list-style-type: none;
+            display: flex;
+        }
+        .nav ul li {
+            margin-right: 15px;
+        }
+        .nav ul li:last-child {
+            margin-right: 0;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #333;
+        }
+        .hero-background {
+            background-image: url('https://http2.mlstatic.com/D_NQ_NP_887721-MLA50801817839_072022-OO.webp');
+            background-size: cover;
+            background-position: center;
+            height: 340px;
+            position: relative;
+        }
+        .hero-background::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(235,235,235,0), rgba(235,235,235,1));
+        }
+        .slider-container {
+            position: relative;
+            margin: 20px 0;
+        }
+        .slider-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(235,235,235,1), rgba(235,235,235,0));
+            z-index: 1;
+        }
+        .slider {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide:nth-child(1) { background-color: #A90F90; }
+        .slide:nth-child(2) { background-color: #0C1A51; }
+        .slide:nth-child(3) { background-color: #00A650; }
+        .slide-content h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 2;
+        }
+        .slider-nav button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(255,255,255,0.5);
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .slider-nav button.active {
+            background-color: white;
+        }
+        .products {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .products h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .product-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .product-card .price {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .product-card .discount {
+            color: #00a650;
+            font-size: 14px;
+        }
+        .product-card .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+        }
+        .cart-icon {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Buscar productos, marcas y más...">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#">Categorías</a></li>
+                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="#">Cupones</a></li>
+                    <li><a href="#">Supermercado</a></li>
+                    <li><a href="#">Moda</a></li>
+                    <li><a href="#">Vender</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#">Crear cuenta</a></li>
+                    <li><a href="#">Ingresa</a></li>
+                    <li><a href="#">Mis compras</a></li>
+                    <li>
+                        <a href="#">
+                            <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero-background"></div>
+
+    <main class="container">
+        <div class="slider-container">
+            <div class="slider-gradient"></div>
+            <section class="slider">
+                <div class="slide active">
+                    <div class="slide-content">
+                        <h2>Hasta 40% OFF en Celulares</h2>
+                        <p>¡Ofertas por tiempo limitado!</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2>Envío gratis en miles de productos</h2>
+                        <p>¡Aprovecha ahora!</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2>12 cuotas sin interés</h2>
+                        <p>En productos seleccionados</p>
+                    </div>
+                </div>
+                <div class="slider-nav">
+                    <button class="active"></button>
+                    <button></button>
+                    <button></button>
+                </div>
+            </section>
+        </div>
+
+        <section class="products">
+            <h2>Ofertas del día</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Silla Ejecutiva">
+                    <h3>Silla Ejecutiva Mesh Ergonómica Negra</h3>
+                    <p class="price">$ 127.920</p>
+                    <p class="discount">20% OFF</p>
+                    <p class="original-price">$ 159.900</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Power Bank">
+                    <h3>Power Bank Batería Portátil</h3>
+                    <p class="price">$ 75.689</p>
+                    <p class="discount">13% OFF</p>
+                    <p class="original-price">$ 86.999</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Parlante Sonos">
+                    <h3>Parlante Sonos Portátil</h3>
+                    <p class="price">$ 365.795</p>
+                    <p class="discount">15% OFF</p>
+                    <p class="original-price">$ 430.347</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Audífonos JBL">
+                    <h3>Audífonos JBL Tune 510BT</h3>
+                    <p class="price">$ 164.206</p>
+                    <p class="discount">26% OFF</p>
+                    <p class="original-price">$ 221.900</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Silla para Auto">
+                    <h3>Silla para Auto Graco</h3>
+                    <p class="price">$ 337.935</p>
+                    <p class="discount">35% OFF</p>
+                    <p class="original-price">$ 519.900</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="products">
+            <h2>Productos destacados</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Smartphone">
+                    <h3>Smartphone Galaxy A54</h3>
+                    <p class="price">$ 899.999</p>
+                    <p class="discount">10% OFF</p>
+                    <p class="original-price">$ 999.999</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Laptop">
+                    <h3>Laptop HP 15.6" Core i5</h3>
+                    <p class="price">$ 1.349.999</p>
+                    <p class="discount">15% OFF</p>
+                    <p class="original-price">$ 1.588.235</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Smart TV">
+                    <h3>Smart TV 55" 4K UHD</h3>
+                    <p class="price">$ 799.999</p>
+                    <p class="discount">20% OFF</p>
+                    <p class="original-price">$ 999.999</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Cafetera">
+                    <h3>Cafetera Express Automática</h3>
+                    <p class="price">$ 449.999</p>
+                    <p class="discount">25% OFF</p>
+                    <p class="original-price">$ 599.999</p>
+                </div>
+                <div class="product-card">
+                    <img src="/placeholder.svg" alt="Bicicleta">
+                    <h3>Bicicleta Mountain Bike 29"</h3>
+                    <p class="price">$ 674.999</p>
+                    <p class="discount">30% OFF</p>
+                    <p class="original-price">$ 964.285</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const navButtons = document.querySelectorAll('.slider-nav button');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            navButtons[currentSlide].classList.remove('active');
+            slides[index].classList.add('active');
+            navButtons[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            showSlide((currentSlide + 1) % slides.length);
+        }
+
+        setInterval(nextSlide, 5000);
+
+        navButtons.forEach((button, index) => {
+            button.addEventListener('click', () => showSlide(index));
+        });
+    </script>
+</body>
+</html>
